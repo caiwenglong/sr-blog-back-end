@@ -21,6 +21,8 @@ public interface ArticlesService extends IService<Articles> {
     // 获取全部的文章
     public HashMap<Object, Object> getAllArticles(String idAuthor, Integer pageNum, Integer pageSize);
 
+    public Articles getArticle(String artId);
+
     // 添加文章
     public Integer addArticle(Articles article);
 

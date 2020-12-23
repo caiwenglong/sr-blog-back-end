@@ -40,12 +40,18 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
 
         // 查询总条数
         Integer total = baseMapper.selectCount(ArticlesQueryWrapper);
-        System.out.println(total);
 
         HashMap<Object, Object> hashMap = new HashMap<>();
         hashMap.put("total", total);
-        hashMap.put("ArticlesList", new ArrayList<>(list));
+        hashMap.put("articleList", new ArrayList<>(list));
         return hashMap;
+    }
+
+    @Override
+    public Articles getArticle(String id) {
+        QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        return baseMapper.selectOne(queryWrapper);
     }
 
     @Override

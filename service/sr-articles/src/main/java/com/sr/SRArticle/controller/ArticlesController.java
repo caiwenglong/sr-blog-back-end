@@ -35,6 +35,16 @@ public class ArticlesController {
         return RS.success().data("insertNum", integer);
     }
 
+    @ApiOperation("通过ID获取文章")
+    @GetMapping("/getArticle/{id}")
+    public RS getArticle(
+            @ApiParam(name = "id", value = "文章ID")
+            @PathVariable String id
+    ) {
+        Articles article = articlesService.getArticle(id);
+        return RS.success().data("article", article);
+    }
+
     @ApiOperation("获取全部文章")
     @GetMapping("/getAll/{idAuthor}/{pageNum}/{pageSize}")
     public RS getAllArticles(
@@ -44,7 +54,7 @@ public class ArticlesController {
             @PathVariable Integer pageSize
     ) {
         HashMap<Object, Object> allArticles = articlesService.getAllArticles(idAuthor, pageNum, pageSize);
-        return RS.success().data("articleList", allArticles);
+        return RS.success().data("result", allArticles);
     }
 
 }
