@@ -1,17 +1,14 @@
 package com.sr.SRArticle.controller;
 
 
+import com.sr.SRArticle.entity.Articles;
 import com.sr.SRArticle.entity.Category;
 import com.sr.SRArticle.service.CategoryService;
 import com.sr.common.utils.RS;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +36,16 @@ public class CategoryController {
     ) {
         List<Category> allCategories = categoryService.getAllCategories(idAuthor);
         return RS.success().data("categories", allCategories);
+    }
+
+    @ApiOperation("添加分类")
+    @PostMapping("/AddArticleCategory")
+    public RS addArticleCategory(
+            @ApiParam(name = "category", value = "分类信息")
+            @RequestBody Category category
+    ) {
+        Integer integer = categoryService.AddCategory(category);
+        return RS.success();
     }
 }
 

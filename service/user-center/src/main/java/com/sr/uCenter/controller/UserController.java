@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "获取用户信息")
-    @GetMapping("/getInfo")
+    @GetMapping("/getUserInfos")
     public RS getInfo(
             @ApiParam(name = "token", value = "token")
                     HttpServletRequest request

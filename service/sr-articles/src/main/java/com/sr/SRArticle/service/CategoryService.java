@@ -16,6 +16,18 @@ import java.util.List;
  */
 public interface CategoryService extends IService<Category> {
 
+    /**
+     * 获取全部分类
+     * @param userId：用户ID
+     * @return
+     */
     List<Category> getAllCategories(String userId);
+
+    /**
+     * 添加文章
+     * @param category：提交过来的分类数据
+     * @return
+     */
+    Integer AddCategory(Category category);
 
 }
