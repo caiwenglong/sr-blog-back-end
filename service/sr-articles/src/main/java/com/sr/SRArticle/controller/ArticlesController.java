@@ -46,14 +46,15 @@ public class ArticlesController {
     }
 
     @ApiOperation("获取全部文章")
-    @GetMapping("/getAll/{idAuthor}/{pageNum}/{pageSize}")
+    @GetMapping("/getAll/{idAuthor}/{category}/{pageNum}/{pageSize}")
     public RS getAllArticles(
             @ApiParam(name = "idAuthor", value = "作者id")
             @PathVariable String idAuthor,
+            @PathVariable String category,
             @PathVariable Integer pageNum,
             @PathVariable Integer pageSize
     ) {
-        HashMap<Object, Object> allArticles = articlesService.getAllArticles(idAuthor, pageNum, pageSize);
+        HashMap<Object, Object> allArticles = articlesService.getAllArticles(idAuthor, category, pageNum, pageSize);
         return RS.success().data("result", allArticles);
     }
 

@@ -28,12 +28,17 @@ import java.util.List;
 public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> implements ArticlesService {
 
     @Override
-    public HashMap<Object, Object> getAllArticles(String idAuthor, Integer pageNum, Integer pageSize) {
+    public HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize) {
         // 创建page对象
         Page<Articles> ArticlesPage = new Page<Articles>(pageNum, pageSize);
         // 构造查询条件
         QueryWrapper<Articles> ArticlesQueryWrapper = new QueryWrapper<>();
-        ArticlesQueryWrapper.eq("id_author", idAuthor);
+        if(idCategory.isEmpty()) {
+            ArticlesQueryWrapper.eq("id_author", idAuthor);
+        } else {
+            ArticlesQueryWrapper.eq("id_author", idAuthor).and(i -> i.eq("category", idCategory));
+        };
+
         // 分页查询
         IPage<Articles> ArticlesIPage = baseMapper.selectPage(ArticlesPage, ArticlesQueryWrapper);
         List<Articles> list = ArticlesIPage.getRecords();

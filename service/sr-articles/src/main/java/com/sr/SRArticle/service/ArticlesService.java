@@ -19,7 +19,7 @@ public interface ArticlesService extends IService<Articles> {
 
 
     // 获取全部的文章
-    public HashMap<Object, Object> getAllArticles(String idAuthor, Integer pageNum, Integer pageSize);
+    public HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize);
 
     public Articles getArticle(String artId);
 
