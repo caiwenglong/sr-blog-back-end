@@ -39,13 +39,33 @@ public class CategoryController {
     }
 
     @ApiOperation("添加分类")
-    @PostMapping("/AddArticleCategory")
+    @PostMapping("/addArticleCategory")
     public RS addArticleCategory(
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        Integer integer = categoryService.AddCategory(category);
+        Integer integer = categoryService.addCategory(category);
+        return RS.success().data("insertNum", integer);
+    }
+
+    @ApiOperation("修改分类")
+    @PostMapping("/modifyArticleCategory")
+    public RS modifyArticleCategory(
+            @ApiParam(name = "category", value = "分类信息")
+            @RequestBody Category category
+    ) {
+        categoryService.modifyCategory(category);
         return RS.success();
+    }
+
+    @ApiOperation("删除分类")
+    @DeleteMapping("/deleteArticleCategory/{idCategory}")
+    public RS deleteArticleCategoryById(
+            @ApiParam(name = "idCategory", value = "分类信息",  required = true)
+            @PathVariable("idCategory") String idCategory
+    ) {
+        Integer integer = categoryService.deleteArticleCategory(idCategory);
+        return RS.success().data("deleteNum", integer);
     }
 }
 

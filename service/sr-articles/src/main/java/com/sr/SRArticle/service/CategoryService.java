@@ -24,10 +24,31 @@ public interface CategoryService extends IService<Category> {
     List<Category> getAllCategories(String userId);
 
     /**
-     * 添加文章
+     * 获取全部分类
+     * @param id：分类ID
+     * @return
+     */
+    Category selectCategoryById(String id);
+
+    /**
+     * 添加分类
      * @param category：提交过来的分类数据
      * @return
      */
-    Integer AddCategory(Category category);
+    Integer addCategory(Category category);
+
+
+    /**
+     * 添加分类
+     * @param category：提交过来的分类数据
+     */
+    void modifyCategory(Category category);
+
+    /**
+     * 删除分类
+     * @param categoryId：分类ID
+     * @return
+     */
+    Integer deleteArticleCategory(String categoryId);
 
 }
