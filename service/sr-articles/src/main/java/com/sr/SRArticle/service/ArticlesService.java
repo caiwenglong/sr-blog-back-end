@@ -19,16 +19,19 @@ public interface ArticlesService extends IService<Articles> {
 
 
     // 获取全部的文章
-    public HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize);
+    HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize);
 
-    public Articles getArticle(String artId);
+    Articles getArticle(String artId);
 
     // 添加文章
-    public Integer addArticle(Articles article);
+    Integer addArticle(Articles article);
 
-    // 删除文章
-    public RS deleteArticle();
+    // 通过文章ID删除文章
+    Integer deleteArticleById(String idArticle);
+
+    // 通过文章ID删除文章
+    Integer deleteArticleByCategoryId(String idCategory);
 
     // 修改文章
-    public RS updateArticle();
+    RS updateArticle();
 }

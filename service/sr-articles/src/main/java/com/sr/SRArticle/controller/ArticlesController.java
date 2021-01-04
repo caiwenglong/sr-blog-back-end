@@ -58,5 +58,25 @@ public class ArticlesController {
         return RS.success().data("result", allArticles);
     }
 
+    @ApiOperation("通过ID删除文章")
+    @DeleteMapping("/deleteArticleById/{idArticle}")
+    public RS deleteArticleById(
+            @ApiParam(name = "idArticle", value = "作者ID",  required = true)
+            @PathVariable("idArticle") String idArticle
+    ) {
+        Integer integer = articlesService.deleteArticleById(idArticle);
+        return RS.success().data("deleteNum", integer) ;
+    }
+
+    @ApiOperation("通过分类ID删除文章")
+    @DeleteMapping("/deleteArticleByCategoryId/{idCategory}")
+    public RS deleteArticleByCategoryId(
+            @ApiParam(name = "idCategory", value = "作者ID",  required = true)
+            @PathVariable("idCategory") String idCategory
+    ) {
+        Integer integer = articlesService.deleteArticleByCategoryId(idCategory);
+        return RS.success().data("deleteNum", integer) ;
+    }
+
 }
 

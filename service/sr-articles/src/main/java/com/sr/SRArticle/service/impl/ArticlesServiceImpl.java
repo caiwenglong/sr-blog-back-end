@@ -71,8 +71,15 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     }
 
     @Override
-    public RS deleteArticle() {
-        return null;
+    public Integer deleteArticleById(String idArticle) {
+        return baseMapper.deleteById(idArticle);
+    }
+
+    @Override
+    public Integer deleteArticleByCategoryId(String idCategory) {
+        QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category", idCategory);
+        return baseMapper.delete(queryWrapper);
     }
 
     @Override
