@@ -30,7 +30,7 @@ public interface ArticlesService extends IService<Articles> {
     Integer deleteArticleById(String idArticle);
 
     // 通过文章ID删除文章
-    Integer deleteArticleByCategoryId(String idCategory);
+    Integer deleteArticleByCategoryId(ArrayList<String> idCategory);
 
     // 修改文章
     RS updateArticle();

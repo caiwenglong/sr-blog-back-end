@@ -76,10 +76,15 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     }
 
     @Override
-    public Integer deleteArticleByCategoryId(String idCategory) {
-        QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("category", idCategory);
-        return baseMapper.delete(queryWrapper);
+    public Integer deleteArticleByCategoryId(ArrayList<String> idCategoryList) {
+        int totalNum = 0;
+        for (String idCategory : idCategoryList) {
+            QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("category", idCategory);
+            int integer = baseMapper.delete(queryWrapper);
+            totalNum = totalNum + integer;
+        }
+        return totalNum;
     }
 
     @Override

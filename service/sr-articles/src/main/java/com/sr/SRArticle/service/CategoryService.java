@@ -3,6 +3,7 @@ package com.sr.SRArticle.service;
 import com.sr.SRArticle.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,5 +51,12 @@ public interface CategoryService extends IService<Category> {
      * @return
      */
     Integer deleteArticleCategory(String categoryId);
+
+
+    /**
+     * 批量删除分类
+     * @param idCategoryList：分类ID列表
+     */
+    Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList);
 
 }

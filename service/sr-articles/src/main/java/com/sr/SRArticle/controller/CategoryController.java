@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,6 +66,16 @@ public class CategoryController {
             @PathVariable("idCategory") String idCategory
     ) {
         Integer integer = categoryService.deleteArticleCategory(idCategory);
+        return RS.success().data("deleteNum", integer);
+    }
+
+    @ApiOperation("批量删除分类")
+    @DeleteMapping("/batchDeleteArticleCategory")
+    public RS batchDeleteArticleCategory(
+            @ApiParam(name = "idCategoryList", value = "分类ID列表",  required = true)
+            @RequestBody ArrayList<String> idCategoryList
+    ) {
+        Integer integer = categoryService.batchDeleteArticleCategory(idCategoryList);
         return RS.success().data("deleteNum", integer);
     }
 }

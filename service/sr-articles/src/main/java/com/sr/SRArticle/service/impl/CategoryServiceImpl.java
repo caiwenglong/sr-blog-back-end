@@ -10,6 +10,7 @@ import com.sr.service.base.exception.CustomException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,6 +60,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public Integer deleteArticleCategory(String categoryId) {
-        return baseMapper.deleteById(categoryId);
+                    return baseMapper.deleteById(categoryId);
+    }
+
+    @Override
+    public Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList) {
+        return baseMapper.deleteBatchIds(idCategoryList);
     }
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -69,12 +70,12 @@ public class ArticlesController {
     }
 
     @ApiOperation("通过分类ID删除文章")
-    @DeleteMapping("/deleteArticleByCategoryId/{idCategory}")
+    @DeleteMapping("/deleteArticleByCategoryIdList")
     public RS deleteArticleByCategoryId(
-            @ApiParam(name = "idCategory", value = "作者ID",  required = true)
-            @PathVariable("idCategory") String idCategory
+            @ApiParam(name = "idCategoryList", value = "分类ID列表",  required = true)
+            @RequestBody ArrayList<String> idCategoryList
     ) {
-        Integer integer = articlesService.deleteArticleByCategoryId(idCategory);
+        Integer integer = articlesService.deleteArticleByCategoryId(idCategoryList);
         return RS.success().data("deleteNum", integer) ;
     }
 
