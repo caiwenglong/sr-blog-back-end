@@ -12,6 +12,7 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("gmtCreate", new Date(), metaObject);
         this.setFieldValByName("gmtModified", new Date(), metaObject);
+        this.setFieldValByName("isParent", false, metaObject);
         this.setFieldValByName("isDisabled", false, metaObject);
         this.setFieldValByName("isDelete", false, metaObject);
         this.setFieldValByName("role", "users", metaObject);

@@ -50,6 +50,10 @@ public class Category implements Serializable {
 
     @ApiModelProperty(value = "是否禁用")
     @TableField(fill = FieldFill.INSERT)
+    private Boolean isParent;
+
+    @ApiModelProperty(value = "是否禁用")
+    @TableField(fill = FieldFill.INSERT)
     private Boolean isDisabled;
 
     @ApiModelProperty(value = "分类创建时间")

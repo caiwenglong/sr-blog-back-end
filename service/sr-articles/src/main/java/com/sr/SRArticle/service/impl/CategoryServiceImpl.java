@@ -24,7 +24,11 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
 
-    // 判断网站是否存在
+    /**
+     * 判断网站是否存在
+     * @param keyword：网站名称
+     * @retur true or false
+     */
     public Boolean isExitCategory(String keyword) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", keyword);
@@ -32,6 +36,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return count > 0;
     }
 
+    /**
+     * 是否通过验证
+     * @param category：分类对象
+     * @return true or false
+     */
     public Boolean isValidated(Category category) {
         // 非空判断
         if(StringUtils.isEmpty(category.getName())) {
@@ -46,36 +55,71 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return true;
     }
 
+    /**
+     * 设置菜单为父元素
+     * @param id 分类ID
+     */
+    public void setIsParent(String id) {
+        UpdateWrapper<Category> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        Category categoryEntity = selectArticleCategoryById(id);
+        categoryEntity.setIsParent(true);
+        baseMapper.update(categoryEntity, updateWrapper);
+    }
+
+    /**
+     * 通过用户ID获取用户所有的分类
+     * @param userId：用户ID
+     * @return 返回分类列表
+     */
     @Override
-    public List<Category> getAllCategories(String userId) {
+    public List<Category> getAllArticleCategories(String userId) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id_user", userId);
         return baseMapper.selectList(queryWrapper);
     }
 
+    /**
+     * 通过分类ID获取分类
+     * @param id：分类ID
+     * @return 分类对象
+     */
     @Override
-    public Category selectCategoryById(String id) {
+    public Category selectArticleCategoryById(String id) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         return baseMapper.selectOne(queryWrapper);
     }
 
+    /**
+     * 添加分类
+     * @param category：提交过来的分类数据
+     * @return 添加的条数
+     */
     @Override
-    public Integer addCategory(Category category) {
+    public Integer addArticleCategory(Category category) {
         if(isValidated(category)) {
+            if(!category.getIdParent().equals("0")) {
+                setIsParent(category.getIdParent());
+            }
             return baseMapper.insert(category);
         } else {
             return 0;
         }
     }
 
+    /**
+     * 修改分类
+     * @param category：提交过来的分类数据
+     * @return 被修改的条数
+     */
     @Override
-    public Integer modifyCategory(Category category) {
+    public Integer modifyArticleCategory(Category category) {
         if(isValidated(category)) {
             UpdateWrapper<Category> updateWrapper = new UpdateWrapper<>();
             String categoryId = category.getId();
             updateWrapper.eq("id", categoryId);
-            Category categoryEntity = selectCategoryById(categoryId);
+            Category categoryEntity = selectArticleCategoryById(categoryId);
             categoryEntity.setName(category.getName());
             categoryEntity.setIcon(category.getIcon());
             return baseMapper.update(categoryEntity, updateWrapper);
@@ -84,6 +128,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
     }
 
+    /**
+     * 删除分类
+     * @param categoryId：分类ID
+     * @return 删除的条数
+     */
     @Override
     public Integer deleteArticleCategory(String categoryId) {
                     return baseMapper.deleteById(categoryId);

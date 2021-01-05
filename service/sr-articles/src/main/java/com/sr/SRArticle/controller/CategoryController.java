@@ -35,7 +35,7 @@ public class CategoryController {
             @ApiParam(name = "idAuthor", value = "作者id")
             @PathVariable String idAuthor
     ) {
-        List<Category> allCategories = categoryService.getAllCategories(idAuthor);
+        List<Category> allCategories = categoryService.getAllArticleCategories(idAuthor);
         return RS.success().data("categories", allCategories);
     }
 
@@ -45,7 +45,7 @@ public class CategoryController {
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        Integer integer = categoryService.addCategory(category);
+        Integer integer = categoryService.addArticleCategory(category);
         return RS.success().data("insertNum", integer);
     }
 
@@ -55,7 +55,7 @@ public class CategoryController {
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        Integer integer = categoryService.modifyCategory(category);
+        Integer integer = categoryService.modifyArticleCategory(category);
         return RS.success().data("modifiedNum", integer);
     }
 
