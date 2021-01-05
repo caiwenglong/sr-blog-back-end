@@ -20,21 +20,21 @@ public interface CategoryService extends IService<Category> {
     /**
      * 获取全部分类
      * @param userId：用户ID
-     * @return
+     * @return 返回所有的分类
      */
     List<Category> getAllCategories(String userId);
 
     /**
      * 获取全部分类
      * @param id：分类ID
-     * @return
+     * @return 返回分类信息
      */
     Category selectCategoryById(String id);
 
     /**
      * 添加分类
      * @param category：提交过来的分类数据
-     * @return
+     * @return 返回添加的条数
      */
     Integer addCategory(Category category);
 
@@ -42,13 +42,14 @@ public interface CategoryService extends IService<Category> {
     /**
      * 添加分类
      * @param category：提交过来的分类数据
+     * @return 返回修改的条数
      */
-    void modifyCategory(Category category);
+    Integer modifyCategory(Category category);
 
     /**
      * 删除分类
      * @param categoryId：分类ID
-     * @return
+     * @return 返回被删除的条数
      */
     Integer deleteArticleCategory(String categoryId);
 
@@ -56,6 +57,7 @@ public interface CategoryService extends IService<Category> {
     /**
      * 批量删除分类
      * @param idCategoryList：分类ID列表
+     * @return 返回被删除的条数
      */
     Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList);
 

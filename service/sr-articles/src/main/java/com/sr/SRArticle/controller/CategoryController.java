@@ -55,8 +55,8 @@ public class CategoryController {
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        categoryService.modifyCategory(category);
-        return RS.success();
+        Integer integer = categoryService.modifyCategory(category);
+        return RS.success().data("modifiedNum", integer);
     }
 
     @ApiOperation("删除分类")
