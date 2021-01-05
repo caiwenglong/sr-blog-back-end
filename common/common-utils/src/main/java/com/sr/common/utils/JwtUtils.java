@@ -83,7 +83,8 @@ public class JwtUtils {
             claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
             Claims claims = claimsJws.getBody();
             return (String)claims.get("id");
+        } else {
+            return "";
         }
-        return "";
     }
 }
