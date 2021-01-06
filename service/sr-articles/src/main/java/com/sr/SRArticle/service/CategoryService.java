@@ -26,6 +26,13 @@ public interface CategoryService extends IService<Category> {
 
     /**
      * 获取全部分类
+     * @param categoryId：分类ID
+     * @return 返回分类的所有子分类
+     */
+    List<Category> getCategoryChildren(String categoryId);
+
+    /**
+     * 获取全部分类
      * @param id：分类ID
      * @return 返回分类信息
      */
@@ -57,8 +64,9 @@ public interface CategoryService extends IService<Category> {
     /**
      * 批量删除分类
      * @param idCategoryList：分类ID列表
+     * @param categoryParentId：被删除最顶层分类的父级ID，用来判断父级是否还有子分类
      * @return 返回被删除的条数
      */
-    Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList);
+    Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList, ArrayList<String> categoryParentId);
 
 }

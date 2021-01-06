@@ -1,7 +1,6 @@
 package com.sr.SRArticle.controller;
 
 
-import com.sr.SRArticle.entity.Articles;
 import com.sr.SRArticle.entity.Category;
 import com.sr.SRArticle.service.CategoryService;
 import com.sr.common.utils.RS;
@@ -11,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -37,6 +36,16 @@ public class CategoryController {
     ) {
         List<Category> allCategories = categoryService.getAllArticleCategories(idAuthor);
         return RS.success().data("categories", allCategories);
+    }
+
+    @ApiOperation("获取分类的子分类")
+    @GetMapping("/getCategoryChildren/{idCategory}")
+    public RS getCategoryChildren(
+            @ApiParam(name = "idCategory", value = "分类ID")
+            @PathVariable String idCategory
+    ) {
+        List<Category> allCategories = categoryService.getCategoryChildren(idCategory);
+        return RS.success().data("categoryChildren", allCategories);
     }
 
     @ApiOperation("添加分类")
@@ -72,10 +81,12 @@ public class CategoryController {
     @ApiOperation("批量删除分类")
     @DeleteMapping("/batchDeleteArticleCategory")
     public RS batchDeleteArticleCategory(
-            @ApiParam(name = "idCategoryList", value = "分类ID列表",  required = true)
-            @RequestBody ArrayList<String> idCategoryList
+            @ApiParam(name = "idCategoryMap", value = "包含分类ID列表和最顶层分类的ID",  required = true)
+            @RequestBody Map<String, ArrayList<String>> idCategoryMap
     ) {
-        Integer integer = categoryService.batchDeleteArticleCategory(idCategoryList);
+        ArrayList<String> categoryIdList = idCategoryMap.get("categoryIdList");
+        ArrayList<String> categoryParentId = idCategoryMap.get("categoryParentId");
+        Integer integer = categoryService.batchDeleteArticleCategory(categoryIdList, categoryParentId);
         return RS.success().data("deleteNum", integer);
     }
 }

@@ -59,11 +59,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * 设置菜单为父元素
      * @param id 分类ID
      */
-    public void setIsParent(String id) {
+    public void setCategoryIsParent(String id, Boolean flag) {
         UpdateWrapper<Category> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", id);
         Category categoryEntity = selectArticleCategoryById(id);
-        categoryEntity.setIsParent(true);
+        categoryEntity.setIsParent(flag);
         baseMapper.update(categoryEntity, updateWrapper);
     }
 
@@ -76,6 +76,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public List<Category> getAllArticleCategories(String userId) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id_user", userId);
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public List<Category> getCategoryChildren(String categoryId) {
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id_parent", categoryId);
         return baseMapper.selectList(queryWrapper);
     }
 
@@ -100,7 +107,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public Integer addArticleCategory(Category category) {
         if(isValidated(category)) {
             if(!category.getIdParent().equals("0")) {
-                setIsParent(category.getIdParent());
+                setCategoryIsParent(category.getIdParent(), true);
             }
             return baseMapper.insert(category);
         } else {
@@ -138,8 +145,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                     return baseMapper.deleteById(categoryId);
     }
 
+    /**
+     * 通过分类ID列表批量删除分类
+     * @param idCategoryList：分类ID列表
+     * @param categoryParentId：被删除最顶层分类的父级ID，用来判断父级是否还有子分类
+     * @return 返回被删除的条数
+     */
     @Override
-    public Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList) {
-        return baseMapper.deleteBatchIds(idCategoryList);
+    public Integer batchDeleteArticleCategory(ArrayList<String> idCategoryList, ArrayList<String> categoryParentId) {
+        int i = baseMapper.deleteBatchIds(idCategoryList);
+        String parentId = categoryParentId.get(0);
+        List<Category> categoryChildren = getCategoryChildren(parentId);
+        // 如果父级ID没有子分类了，将父级分类的isParent设置为false
+        if(categoryChildren.size()==0) {
+            setCategoryIsParent(parentId, false);
+        }
+        return i;
     }
 }
