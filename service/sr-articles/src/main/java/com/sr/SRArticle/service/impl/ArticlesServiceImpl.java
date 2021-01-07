@@ -1,6 +1,7 @@
 package com.sr.SRArticle.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sr.SRArticle.entity.Articles;
@@ -26,6 +27,15 @@ import java.util.List;
  */
 @Service
 public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> implements ArticlesService {
+
+    public Boolean isEmpty(Articles article) {
+        if(StringUtils.isEmpty(article.getTitle())
+                || StringUtils.isEmpty(article.getContent())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
     public HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize) {
@@ -63,11 +73,26 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     public Integer addArticle(Articles article) {
 
         // 非空判断
-        if(StringUtils.isEmpty(article.getTitle())
-                || StringUtils.isEmpty(article.getContent())) {
+        if(isEmpty(article)) {
             throw new CustomException("SR20002", "添加失败！文章标题或内容不能为空！");
         }
         return baseMapper.insert(article);
+    }
+
+    @Override
+    public Integer modifyArticle(Articles article) {
+        if(isEmpty(article)) {
+            throw new CustomException("SR20002", "添加失败！文章标题或内容不能为空！");
+        }
+        UpdateWrapper<Articles> articlesUpdateWrapper = new UpdateWrapper<>();
+        String articleId = article.getId();
+        articlesUpdateWrapper.eq("id", articleId);
+        Articles articleEntity = getArticle(articleId);
+        articleEntity.setTitle(article.getTitle());
+        articleEntity.setContent(article.getContent());
+        articleEntity.setCategory(article.getCategory());
+        articleEntity.setTags(article.getTags());
+        return baseMapper.update(articleEntity, articlesUpdateWrapper);
     }
 
     @Override

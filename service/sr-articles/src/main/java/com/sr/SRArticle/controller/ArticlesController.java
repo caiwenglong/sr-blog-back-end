@@ -36,6 +36,15 @@ public class ArticlesController {
         return RS.success().data("insertNum", integer);
     }
 
+    @ApiOperation("修改文章")
+    @PostMapping("/modify")
+    public RS modifyArticle(
+            @ApiParam(name = "article", value = "文章信息")
+            @RequestBody Articles article) {
+        Integer integer = articlesService.modifyArticle(article);
+        return RS.success().data("updateNum", integer);
+    }
+
     @ApiOperation("通过ID获取文章")
     @GetMapping("/getArticle/{id}")
     public RS getArticle(

@@ -26,6 +26,9 @@ public interface ArticlesService extends IService<Articles> {
     // 添加文章
     Integer addArticle(Articles article);
 
+    // 修改文章
+    Integer modifyArticle(Articles article);
+
     // 通过文章ID删除文章
     Integer deleteArticleById(String idArticle);
 
