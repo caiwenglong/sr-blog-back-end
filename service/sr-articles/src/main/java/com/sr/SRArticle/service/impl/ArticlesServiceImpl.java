@@ -111,9 +111,4 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
         }
         return totalNum;
     }
-
-    @Override
-    public RS updateArticle() {
-        return null;
-    }
 }
