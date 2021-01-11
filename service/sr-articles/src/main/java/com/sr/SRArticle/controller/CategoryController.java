@@ -54,8 +54,8 @@ public class CategoryController {
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        Integer integer = categoryService.addArticleCategory(category);
-        return RS.success().data("insertNum", integer);
+        Category categoryEntity = categoryService.addArticleCategory(category);
+        return RS.success().data("category", categoryEntity);
     }
 
     @ApiOperation("修改分类")
@@ -64,8 +64,8 @@ public class CategoryController {
             @ApiParam(name = "category", value = "分类信息")
             @RequestBody Category category
     ) {
-        Integer integer = categoryService.modifyArticleCategory(category);
-        return RS.success().data("modifiedNum", integer);
+        Category categoryEntity = categoryService.modifyArticleCategory(category);
+        return RS.success().data("category", categoryEntity);
     }
 
     @ApiOperation("删除分类")

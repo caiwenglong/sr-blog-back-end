@@ -32,18 +32,26 @@ public interface CategoryService extends IService<Category> {
     List<Category> getCategoryChildren(String categoryId);
 
     /**
-     * 获取全部分类
+     * 通过分类ID获取分类
      * @param id：分类ID
      * @return 返回分类信息
      */
     Category selectArticleCategoryById(String id);
 
     /**
+     * 通过分类名称获取分类
+     * @param name：分类名称
+     * @return 返回分类信息
+     */
+    Category selectArticleCategoryByName(String name);
+
+
+    /**
      * 添加分类
      * @param category：提交过来的分类数据
      * @return 返回添加的条数
      */
-    Integer addArticleCategory(Category category);
+    Category addArticleCategory(Category category);
 
 
     /**
@@ -51,7 +59,7 @@ public interface CategoryService extends IService<Category> {
      * @param category：提交过来的分类数据
      * @return 返回修改的条数
      */
-    Integer modifyArticleCategory(Category category);
+    Category modifyArticleCategory(Category category);
 
     /**
      * 删除分类

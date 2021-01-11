@@ -99,19 +99,32 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     /**
+     * 通过分类名称获取分类
+     * @param name：分类名称
+     * @return 分类对象
+     */
+    @Override
+    public Category selectArticleCategoryByName(String name) {
+        QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", name);
+        return baseMapper.selectOne(queryWrapper);
+    }
+
+    /**
      * 添加分类
      * @param category：提交过来的分类数据
      * @return 添加的条数
      */
     @Override
-    public Integer addArticleCategory(Category category) {
+    public Category addArticleCategory(Category category) {
         if(isValidated(category)) {
             if(!category.getIdParent().equals("0")) {
                 setCategoryIsParent(category.getIdParent(), true);
             }
-            return baseMapper.insert(category);
+            baseMapper.insert(category);
+            return selectArticleCategoryByName(category.getName());
         } else {
-            return 0;
+            return new Category();
         }
     }
 
@@ -121,18 +134,18 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return 被修改的条数
      */
     @Override
-    public Integer modifyArticleCategory(Category category) {
-        if(isValidated(category)) {
-            UpdateWrapper<Category> updateWrapper = new UpdateWrapper<>();
-            String categoryId = category.getId();
-            updateWrapper.eq("id", categoryId);
-            Category categoryEntity = selectArticleCategoryById(categoryId);
-            categoryEntity.setName(category.getName());
-            categoryEntity.setIcon(category.getIcon());
-            return baseMapper.update(categoryEntity, updateWrapper);
-        } else {
-            return 0;
+    public Category modifyArticleCategory(Category category) {
+        if(StringUtils.isEmpty(category.getName())) {
+            throw new CustomException("SR20002", "添加失败！菜单名称不能为空！");
         }
+        UpdateWrapper<Category> updateWrapper = new UpdateWrapper<>();
+        String categoryId = category.getId();
+        updateWrapper.eq("id", categoryId);
+        Category categoryEntity = selectArticleCategoryById(categoryId);
+        categoryEntity.setName(category.getName());
+        categoryEntity.setIcon(category.getIcon());
+        baseMapper.update(categoryEntity, updateWrapper);
+        return categoryEntity;
     }
 
     /**
