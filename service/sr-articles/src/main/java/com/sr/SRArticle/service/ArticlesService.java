@@ -20,11 +20,10 @@ public interface ArticlesService extends IService<Articles> {
 
     /**
      * 分页获取文章
-     * @param idAuthor： 用户ID
      * @param idCategory：分类ID
      * @return 返回文章列表数据
      */
-    List<Articles> getArticlesByCategory(String idAuthor, String idCategory);
+    List<Articles> getArticlesByCategory(String idCategory);
 
 
     /**
@@ -71,4 +70,12 @@ public interface ArticlesService extends IService<Articles> {
      * @return 返回删除的条数
      */
     Integer deleteArticleByCategoryId(ArrayList<String> idCategory);
+
+    /**
+     * 移动文章到子分类
+     * @param categoryId 移动后的分类ID
+     * @param categoryParentId 原来文章的分类ID
+     */
+    void moveArticleToNewCategory(String categoryId, String categoryParentId);
+
 }

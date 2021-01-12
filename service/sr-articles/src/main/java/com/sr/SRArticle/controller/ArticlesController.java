@@ -57,15 +57,13 @@ public class ArticlesController {
     }
 
     @ApiOperation("通过分类获取文章")
-    @GetMapping("/getAll/{idAuthor}/{categoryId}")
+    @GetMapping("/getArticleByCategory/{categoryId}")
     public RS getArticlesByCategory(
-            @ApiParam(name = "idAuthor", value = "作者id")
-            @PathVariable String idAuthor,
             @ApiParam(name = "categoryId", value = "分类id")
             @PathVariable String categoryId
     ) {
-        List<Articles> articlesByCategory = articlesService.getArticlesByCategory(idAuthor, categoryId);
-        return RS.success().data("result", articlesByCategory);
+        List<Articles> articlesList = articlesService.getArticlesByCategory(categoryId);
+        return RS.success().data("result", articlesList);
     }
 
     @ApiOperation("分页获取文章")

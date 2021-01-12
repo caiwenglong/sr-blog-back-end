@@ -34,7 +34,7 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
     }
 
     @Override
-    public List<Articles> getArticlesByCategory(String idAuthor, String idCategory) {
+    public List<Articles> getArticlesByCategory(String idCategory) {
         QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("category", idCategory);
         return baseMapper.selectList(queryWrapper);
@@ -113,5 +113,16 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
             totalNum = totalNum + integer;
         }
         return totalNum;
+    }
+
+    @Override
+    public void moveArticleToNewCategory(String categoryId, String categoryParentId) {
+        UpdateWrapper<Articles> articlesUpdateWrapper = new UpdateWrapper<>();
+        articlesUpdateWrapper.eq("category", categoryParentId);
+        List<Articles> articleList = getArticlesByCategory(categoryParentId);
+        for(Articles article: articleList) {
+            article.setCategory(categoryId);
+            baseMapper.update(article, articlesUpdateWrapper);
+        }
     }
 }

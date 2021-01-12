@@ -2,11 +2,14 @@ package com.sr.SRArticle.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.sr.SRArticle.entity.Articles;
 import com.sr.SRArticle.entity.Category;
 import com.sr.SRArticle.mapper.CategoryMapper;
+import com.sr.SRArticle.service.ArticlesService;
 import com.sr.SRArticle.service.CategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sr.service.base.exception.CustomException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +26,9 @@ import java.util.List;
  */
 @Service
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
+
+    @Autowired
+    private ArticlesService articlesService;
 
     /**
      * 判断网站是否存在
@@ -118,11 +124,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public Category addArticleCategory(Category category) {
         if(isValidated(category)) {
-            if(!category.getIdParent().equals("0")) {
-                setCategoryIsParent(category.getIdParent(), true);
-            }
             baseMapper.insert(category);
-            return selectArticleCategoryByName(category.getName());
+            if(!category.getIdParent().equals("0")) {
+                Category categoryEntity = selectArticleCategoryByName(category.getName());
+                setCategoryIsParent(category.getIdParent(), true);
+                String categoryId = categoryEntity.getId();
+                articlesService.moveArticleToNewCategory(categoryId, category.getIdParent());
+                return categoryEntity;
+            } else {
+                return selectArticleCategoryByName(category.getName());
+            }
         } else {
             return new Category();
         }
