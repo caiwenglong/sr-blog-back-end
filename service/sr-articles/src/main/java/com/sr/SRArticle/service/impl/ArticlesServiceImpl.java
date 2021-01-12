@@ -29,16 +29,19 @@ import java.util.List;
 public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> implements ArticlesService {
 
     public Boolean isEmpty(Articles article) {
-        if(StringUtils.isEmpty(article.getTitle())
-                || StringUtils.isEmpty(article.getContent())) {
-            return true;
-        } else {
-            return false;
-        }
+        return StringUtils.isEmpty(article.getTitle())
+                || StringUtils.isEmpty(article.getContent());
     }
 
     @Override
-    public HashMap<Object, Object> getAllArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize) {
+    public List<Articles> getArticlesByCategory(String idAuthor, String idCategory) {
+        QueryWrapper<Articles> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category", idCategory);
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public HashMap<Object, Object> getPagingArticles(String idAuthor, String idCategory, Integer pageNum, Integer pageSize) {
         // 创建page对象
         Page<Articles> ArticlesPage = new Page<Articles>(pageNum, pageSize);
         // 构造查询条件

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -55,7 +56,19 @@ public class ArticlesController {
         return RS.success().data("article", article);
     }
 
-    @ApiOperation("获取全部文章")
+    @ApiOperation("通过分类获取文章")
+    @GetMapping("/getAll/{idAuthor}/{categoryId}")
+    public RS getArticlesByCategory(
+            @ApiParam(name = "idAuthor", value = "作者id")
+            @PathVariable String idAuthor,
+            @ApiParam(name = "categoryId", value = "分类id")
+            @PathVariable String categoryId
+    ) {
+        List<Articles> articlesByCategory = articlesService.getArticlesByCategory(idAuthor, categoryId);
+        return RS.success().data("result", articlesByCategory);
+    }
+
+    @ApiOperation("分页获取文章")
     @GetMapping("/getAll/{idAuthor}/{category}/{pageNum}/{pageSize}")
     public RS getAllArticles(
             @ApiParam(name = "idAuthor", value = "作者id")
@@ -64,7 +77,7 @@ public class ArticlesController {
             @PathVariable Integer pageNum,
             @PathVariable Integer pageSize
     ) {
-        HashMap<Object, Object> allArticles = articlesService.getAllArticles(idAuthor, category, pageNum, pageSize);
+        HashMap<Object, Object> allArticles = articlesService.getPagingArticles(idAuthor, category, pageNum, pageSize);
         return RS.success().data("result", allArticles);
     }
 
