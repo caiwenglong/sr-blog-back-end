@@ -153,6 +153,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         String categoryId = category.getId();
         updateWrapper.eq("id", categoryId);
         Category categoryEntity = selectArticleCategoryById(categoryId);
+        categoryEntity.setIdParent(category.getIdParent());
         categoryEntity.setName(category.getName());
         categoryEntity.setIcon(category.getIcon());
         baseMapper.update(categoryEntity, updateWrapper);
