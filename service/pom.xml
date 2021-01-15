@@ -24,11 +24,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sr</groupId>
-            <artifactId>common-utils</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
         </dependency>
