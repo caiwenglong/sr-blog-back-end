@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>common</artifactId>
-    <packaging>pom</packaging>
     <modules>
         <module>service-base</module>
         <module>common-utils</module>
