@@ -71,14 +71,14 @@
         </dependency>
 
         <!-- elasticsearch 用来做查询-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
 
