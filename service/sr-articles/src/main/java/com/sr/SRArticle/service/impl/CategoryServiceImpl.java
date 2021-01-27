@@ -33,7 +33,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     /**
      * 判断网站是否存在
      * @param keyword：网站名称
-     * @retur true or false
+     * @return true or false
      */
     public Boolean isExitCategory(String keyword) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
@@ -54,9 +54,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
 
         // 判断是否已经存在分类名称
-        if(isExitCategory(category.getName())) {
-            throw new CustomException("SR20007", "添加失败！菜单名称已经存在！");
-        }
+//        if(isExitCategory(category.getName())) {
+//            throw new CustomException("SR20007", "添加失败！菜单名称已经存在！");
+//        }
 
         return true;
     }
