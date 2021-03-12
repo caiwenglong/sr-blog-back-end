@@ -13,6 +13,8 @@ import com.sr.uCenter.mapper.UserMapper;
 import com.sr.uCenter.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,6 +30,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
 
     // 登录功能
     @Override
@@ -86,6 +91,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
 
         if(!phoneCode.equals("1234")) {
+            throw new CustomException("OW20011", "注册失败！验证码不能正确！");
+        }
+        //判断验证码
+        //获取redis验证码
+        String redisCode = redisTemplate.opsForValue().get(mobile);
+        if(!phoneCode.equals(redisCode)) {
             throw new CustomException("OW20011", "注册失败！验证码不能正确！");
         }
 
