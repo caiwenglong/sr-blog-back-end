@@ -90,10 +90,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException("SR20002", "注册失败！手机号/密码/验证码不能为空！");
         }
 
-        if(!phoneCode.equals("1234")) {
-            throw new CustomException("OW20011", "注册失败！验证码不能正确！");
-        }
-        //判断验证码
         //获取redis验证码
         String redisCode = redisTemplate.opsForValue().get(mobile);
         if(!phoneCode.equals(redisCode)) {

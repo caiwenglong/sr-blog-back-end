@@ -42,8 +42,6 @@ public class MsmServiceImpl implements MsmService {
         request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));
         try {
             CommonResponse response = client.getCommonResponse(request);
-            System.out.println(1);
-            System.out.println(response.getData());
             return response.getHttpResponse().isSuccess();
         } catch (ServerException e) {
             e.printStackTrace();
