@@ -23,7 +23,7 @@ public interface UserService extends IService<User> {
     RS login(LoginVo user);
 
     // 注册方法
-    void register(RegisterVo registerVo);
+    RS register(RegisterVo registerVo);
 
     // 获取用户信息
     UserInfoVo getUserInfo(HttpServletRequest token);

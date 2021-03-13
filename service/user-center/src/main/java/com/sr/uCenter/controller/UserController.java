@@ -41,8 +41,7 @@ public class UserController {
             @ApiParam(name = "registerVo", value = "注册的用户对")
             @RequestBody RegisterVo registerVo
     ) {
-        userService.register(registerVo);
-        return RS.success();
+        return userService.register(registerVo);
     }
 
     @ApiOperation(value = "获取用户信息")

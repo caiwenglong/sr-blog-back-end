@@ -44,10 +44,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return loginError("SR20002", "登录失败！手机号或者密码不能为空");
         }
 
-        // 通过账号查询用户
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("mobile", mobile);
-        User hitUser = baseMapper.selectOne(userQueryWrapper);
+        User hitUser = hitUser(mobile);
 
         if(hitUser == null || hitUser.getIsDelete()) {
             return loginError("SR20005", "登录失败！该账号不存在");
@@ -65,6 +62,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return loginSuccess(hitUser);
     }
 
+    public User hitUser(String mobile) {
+        // 通过账号查询用户
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("mobile", mobile);
+        return baseMapper.selectOne(userQueryWrapper);
+    }
+
     public RS loginError(String code, String message) {
         return RS.error().code(code).message(message);
     }
@@ -77,7 +81,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     // 注册功能
     @Override
-    public void register(RegisterVo registerVo) {
+    public RS register(RegisterVo registerVo) {
 
         // 获取用户信息
         String mobile = registerVo.getMobile();
@@ -96,11 +100,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new CustomException("OW20011", "注册失败！验证码不能正确！");
         }
 
-        User user = new User();
-        user.setMobile(mobile);
-        user.setNickname(nickname);
-        user.setPassword(MD5.encrypt(password));
-        baseMapper.insert(user);
+        // 如果有电话号码，这不能在注册
+        User hitUser = hitUser(mobile);
+        if(hitUser == null) {
+            User user = new User();
+            user.setMobile(mobile);
+            user.setNickname(nickname);
+            user.setPassword(MD5.encrypt(password));
+            baseMapper.insert(user);
+            // 注册成功,直接登陆
+            hitUser = hitUser(mobile);
+            assert false; // 断言hitUser 不能为空
+            return loginSuccess(hitUser);
+        } else {
+            throw new CustomException("OW20012", "注册失败！该手机号码已经被注册，请直接登陆！");
+        }
+
+
+
+
 
     }
 
