@@ -4,6 +4,7 @@ import com.sr.common.utils.RS;
 import com.sr.uCenter.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sr.uCenter.entity.vo.LoginVo;
+import com.sr.uCenter.entity.vo.ModifyVo;
 import com.sr.uCenter.entity.vo.RegisterVo;
 import com.sr.uCenter.entity.vo.UserInfoVo;
 
@@ -27,6 +28,9 @@ public interface UserService extends IService<User> {
 
     // 获取用户信息
     UserInfoVo getUserInfo(HttpServletRequest token);
+
+    // 修改密码
+    RS modifyPassword(ModifyVo modifyVo);
 
     public RS logout();
 

@@ -1,12 +1,14 @@
 package com.sr.uCenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.sr.common.utils.JwtUtils;
 import com.sr.common.utils.MD5;
 import com.sr.common.utils.RS;
 import com.sr.service.base.exception.CustomException;
 import com.sr.uCenter.entity.User;
 import com.sr.uCenter.entity.vo.LoginVo;
+import com.sr.uCenter.entity.vo.ModifyVo;
 import com.sr.uCenter.entity.vo.RegisterVo;
 import com.sr.uCenter.entity.vo.UserInfoVo;
 import com.sr.uCenter.mapper.UserMapper;
@@ -115,11 +117,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             throw new CustomException("OW20012", "注册失败！该手机号码已经被注册，请直接登陆！");
         }
-
-
-
-
-
     }
 
     @Override
@@ -132,6 +129,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserInfoVo userInfoVo = new UserInfoVo();
         BeanUtils.copyProperties(user, userInfoVo);
         return userInfoVo;
+    }
+
+    @Override
+    public RS modifyPassword(ModifyVo modifyVo) {
+
+        // 获取用户信息
+        String mobile = modifyVo.getMobile();
+        String password = modifyVo.getPassword();
+        String phoneCode = modifyVo.getPhoneCode();
+
+        if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password) || StringUtils.isEmpty(phoneCode)) {
+            throw new CustomException("SR20002", "注册失败！手机号/密码/验证码不能为空！");
+        }
+
+        //获取redis验证码
+        String redisCode = redisTemplate.opsForValue().get(mobile);
+        if(!phoneCode.equals(redisCode)) {
+            throw new CustomException("OW20011", "修改密码失败！验证码不能正确！");
+        }
+
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("mobile", mobile);
+        User hitUser = hitUser(mobile);
+        hitUser.setPassword(MD5.encrypt(password));
+        baseMapper.update(hitUser, updateWrapper);
+
+        return RS.success();
     }
 
     @Override

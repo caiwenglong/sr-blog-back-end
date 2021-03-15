@@ -2,7 +2,9 @@ package com.sr.uCenter.controller;
 
 
 import com.sr.common.utils.RS;
+import com.sr.common.utils.RandomUtil;
 import com.sr.uCenter.entity.vo.LoginVo;
+import com.sr.uCenter.entity.vo.ModifyVo;
 import com.sr.uCenter.entity.vo.RegisterVo;
 import com.sr.uCenter.entity.vo.UserInfoVo;
 import com.sr.uCenter.service.UserService;
@@ -12,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -38,10 +43,19 @@ public class UserController {
     @ApiOperation(value = "用户注册")
     @PostMapping("/register")
     public RS registerUser(
-            @ApiParam(name = "registerVo", value = "注册的用户对")
+            @ApiParam(name = "registerVo", value = "注册的用户对象")
             @RequestBody RegisterVo registerVo
     ) {
         return userService.register(registerVo);
+    }
+
+    @ApiOperation(value = "修改密码")
+    @PostMapping("/modify-password")
+    public RS modifyPassword(
+            @ApiParam(name = "modifyVo", value = "注册的用户对象")
+            @RequestBody ModifyVo modifyVo
+    ) {
+        return userService.modifyPassword(modifyVo);
     }
 
     @ApiOperation(value = "获取用户信息")
