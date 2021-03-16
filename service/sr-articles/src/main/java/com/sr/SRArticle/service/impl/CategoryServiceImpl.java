@@ -33,7 +33,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     /**
      * 判断网站是否存在
      * @param keyword：网站名称
-     * @retur true or false
+     * @return true or false
      */
     public Boolean isExitCategory(String keyword) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
