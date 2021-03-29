@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -32,12 +34,15 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     /**
      * 判断网站是否存在
-     * @param keyword：网站名称
+     * @param category：网站分类对象
      * @return true or false
      */
-    public Boolean isExitCategory(String keyword) {
+    public Boolean isExitCategory(Category category) {
         QueryWrapper<Category> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name", keyword);
+        Map<String , Object> map = new HashMap<>();
+        map.put("name" , category.getName());
+        map.put("id_user" , category.getIdUser());
+        queryWrapper.allEq(map);
         Integer count = baseMapper.selectCount(queryWrapper);
         return count > 0;
     }
@@ -54,7 +59,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
 
         // 判断是否已经存在分类名称
-        if(isExitCategory(category.getName())) {
+        if(isExitCategory(category)) {
             throw new CustomException("SR20007", "添加失败！菜单名称已经存在！");
         }
 
@@ -126,13 +131,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         if(isValidated(category)) {
             baseMapper.insert(category);
             if(!category.getIdParent().equals("0")) {
-                Category categoryEntity = selectArticleCategoryByName(category.getName());
+                Category categoryEntity = selectArticleCategoryById(category.getId());
                 setCategoryIsParent(category.getIdParent(), true);
                 String categoryId = categoryEntity.getId();
                 articlesService.moveArticleToNewCategory(categoryId, category.getIdParent());
                 return categoryEntity;
             } else {
-                return selectArticleCategoryByName(category.getName());
+                return selectArticleCategoryById(category.getId());
             }
         } else {
             return new Category();
